@@ -1,3 +1,61 @@
 body {
+  margin: 0;
+  font-family: "Raleway", sans-serif;
   background-color: black;
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
+  align-items: center;
+  justify-items: center;
+  height: 100vh;
+  color: white;
+}
+
+#header {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  width: 100%;
+  height: 100%;
+
+}
+
+#logo-div {
+  justify-self: start;
+  margin-left: 4rem;
+  font-size: 4rem;
+  font-weight: 500;
+  user-select: none;
+}
+
+#current-turn {
+  font-size: 2.5rem;
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+  filter: invert(1);
+}
+
+#restart-button {
+  justify-self: end;
+  margin-right: 4rem;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 15px;
+  background-color: black;
+  border: none;
+}
+
+#game-grid {
+  color: black;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 8px;
+  aspect-ratio: 1;
+  width: 30rem;
+  height: auto;
 }
