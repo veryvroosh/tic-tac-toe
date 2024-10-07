@@ -59,3 +59,7 @@ body {
   width: 30rem;
   height: auto;
 }
+
+.game-cell {
+  font-size: 3rem;
+}
