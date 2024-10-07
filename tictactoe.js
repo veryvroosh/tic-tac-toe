@@ -4,9 +4,28 @@ const game = (function() {
     let roundIndicator = 0;
     let eventListeners = [];
 
+    let player1wins = 0, player2wins = 0, drawCount = 0;
+
     const cells = document.querySelectorAll(".game-cell");
     const winDiv = document.createElement("div");
     const playerWinDiv = document.createElement("div");
+    const restartButton = document.querySelector("#restart-button");
+    const player1score = document.querySelector("#player1-score");
+    const player2score = document.querySelector("#player2-score");
+    const drawScore = document.querySelector("#draw-score");
+
+    restartButton.addEventListener('click', () => {
+        game.removeEventListeners();
+        game.cleanGame();
+        game.playRound();
+        player1wins = 0;
+        player2wins = 0;
+        drawCount = 0;
+        player1score.textContent = `Player 1 Wins: ${player1wins}`;
+        player2score.textContent = `Player 1 Wins: ${player2wins}`;
+        drawScore.textContent = `Player 1 Wins: ${drawCount}`;
+
+    });
 
 
     function handleCellClick(cell) {
@@ -19,14 +38,30 @@ const game = (function() {
             gameBoard[placement-1] = "X";
             cell.textContent = "X";
             if (game.checkWin() === true) {
+                player1wins++;
+                player1score.textContent = `Player 1 Wins: ${player1wins}`;
                 game.roundWon("Player1")
             }
         } else {
             gameBoard[placement-1] = "O";
             cell.textContent = "O";
-            if(game.checkWin()===true) {
-                game.roundWon("Player2")
+            if (game.checkWin() === true) {
+                player2wins++;
+                player2score.textContent = `Player 2 Wins: ${player2wins}`;
+                game.roundWon("Player2");
             }
+        }
+
+        if(roundIndicator === 9 && game.checkWin()===false) {
+            winDiv.classList.add("game-won");
+            document.body.classList.add("blurred");
+            playerWinDiv.textContent = `Draw`;
+            winDiv.appendChild(playerWinDiv);
+            document.body.appendChild(winDiv);
+            game.removeEventListeners();
+            drawCount++;
+            drawScore.textContent = `Draw Count: ${drawCount}`;
+            setTimeout(startGame, 3000);
         }
     }
 
@@ -60,7 +95,6 @@ const game = (function() {
         },
 
         roundWon: function(winnerName) {
-            // winDiv.id = "game-won";
             winDiv.classList.add("game-won");
             document.body.classList.add("blurred");
             playerWinDiv.textContent = `${winnerName} won the game!`;

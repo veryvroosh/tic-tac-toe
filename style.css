@@ -53,6 +53,10 @@ body.blurred *:not(.game-won) {
   border: none;
 }
 
+button {
+  user-select: none;
+}
+
 #game-grid {
   color: black;
   display: grid;
