@@ -5,6 +5,9 @@ const game = (function() {
     let eventListeners = [];
 
     const cells = document.querySelectorAll(".game-cell");
+    const winDiv = document.createElement("div");
+    const playerWinDiv = document.createElement("div");
+
 
     function handleCellClick(cell) {
         cell.disabled = true;
@@ -57,12 +60,24 @@ const game = (function() {
         },
 
         roundWon: function(winnerName) {
+            // winDiv.id = "game-won";
+            winDiv.classList.add("game-won");
+            document.body.classList.add("blurred");
+            playerWinDiv.textContent = `${winnerName} won the game!`;
+            winDiv.appendChild(playerWinDiv);
+
+            document.body.appendChild(winDiv);
+
             console.log(`${winnerName} won the game!`);
             game.removeEventListeners();
             setTimeout(startGame, 3000);
         },
 
         cleanGame: function() {
+
+            winDiv.remove();
+            document.body.classList.remove("blurred");
+
             roundIndicator = 0;
             for(let i=0; i<9; i++) {
                 gameBoard[i] = undefined;
