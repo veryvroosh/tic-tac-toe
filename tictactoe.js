@@ -50,6 +50,16 @@ const game = (function() {
             currentPlayer.textContent = `${player2name}'s Turn`;
             gameBoard[placement-1] = "X";
             cell.textContent = "X";
+            cell.classList.remove("hover1");
+            cell.classList.add("stay1");
+
+            cells.forEach((box) => {
+                if(!box.classList.contains("stay1")) {
+                    box.classList.remove("hover1");
+                    box.classList.add("hover2");
+                }
+            })
+
             if (game.checkWin() === true) {
                 currentPlayer.textContent = `${player1name}'s Turn`;
                 player1wins++;
@@ -60,6 +70,15 @@ const game = (function() {
             currentPlayer.textContent = `${player1name}'s Turn`;
             gameBoard[placement-1] = "O";
             cell.textContent = "O";
+            cell.classList.add("stay2");
+
+            cells.forEach((box) => {
+                if(!box.classList.contains("stay2")) {
+                    box.classList.remove("hover2");
+                    box.classList.add("hover1");
+                }
+            })
+
             if (game.checkWin() === true) {
                 currentPlayer.textContent = `${player2name}'s Turn`;
                 player2wins++;
@@ -120,6 +139,11 @@ const game = (function() {
 
             document.body.appendChild(winDiv);
 
+            cells.forEach(cell => {
+                cell.classList.remove("hover1", "hover2", "stay1", "stay2");
+            });
+
+
             game.removeEventListeners();
             setTimeout(startGame, 3000);
         },
@@ -136,6 +160,9 @@ const game = (function() {
             }
 
             cells.forEach(cell => {
+                cell.classList.add("hover1");
+                cell.classList.remove("hover2", "stay1", "stay2");
+
                 cell.textContent = "";
                 cell.disabled = false;
             });
@@ -146,6 +173,16 @@ const game = (function() {
                 cell.removeEventListener('click', listener);
             });
             eventListeners = [];
+        },
+
+        setPlayer1Name: function(name) {
+            player1name = name;
+            player1score.textContent = `${player1name} Wins: ${player1wins}`;
+        },
+
+        setPlayer2Name: function(name) {
+            player2name = name;
+            player2score.textContent = `${player2name} Wins: ${player2wins}`;
         }
     };
 })();

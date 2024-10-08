@@ -31,6 +31,9 @@ body.blurred *:not(.game-won) {
   font-size: 4rem;
   font-weight: 500;
   user-select: none;
+  text-shadow:
+          -2px 0 0 rgb(185, 185, 185);  /* No blur, solid left-side shadow */
+
 }
 
 #current-turn {
@@ -51,6 +54,17 @@ body.blurred *:not(.game-won) {
   border-radius: 15px;
   background-color: black;
   border: none;
+  transition: 200ms ease-in;
+  transform: rotate(60deg);
+}
+
+#restart-button:hover {
+  transform: rotate(0) scale(110%) translate(0, 2px);
+}
+
+/* Added clicking effect */
+#restart-button:active {
+  transform: scale(1);
 }
 
 button {
@@ -62,15 +76,105 @@ button {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 8px;
+  gap: 10px;
   aspect-ratio: 1;
   width: 30rem;
   height: auto;
 }
 
 .game-cell {
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
   font-size: 3rem;
+  border-radius: 15px;
+  position: relative;
+  border: none;
 }
+
+.game-cell:disabled {
+  background-color: white;
+}
+
+@property --angle1 {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.hover1:hover::after,
+.hover1:hover::before,
+.stay1::after,
+.stay1::before {
+  --angle: 0deg;
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: conic-gradient(from var(--angle1), #FF21AE, #AA6BC6, #55B5DF, #00FFF7, #AA6BC6);
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+  padding: 3px;
+  border-radius: 15px;
+  animation: 2s spin1 linear infinite;
+}
+
+.hover1:hover::before,
+.stay1::before {
+  z-index: -2;
+  filter: blur(1rem);
+}
+
+@keyframes  spin1{
+  from {
+    --angle1: 0deg;
+  }
+  to {
+    --angle1: 360deg;
+  }
+}
+
+@property --angle2 {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.hover2:hover::after,
+.hover2:hover::before,
+.stay2::after,
+.stay2::before {
+  --angle: 0deg;
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: conic-gradient(from var(--angle2), #ff7300, #C16850, #845DA1, #4652F1, #C16850);
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+  padding: 3px;
+  border-radius: 15px;
+  animation: 2s spin2 linear infinite;
+}
+
+.hover2:hover::before,
+.stay2::before {
+  z-index: -2;
+  filter: blur(1rem);
+}
+
+@keyframes spin2{
+  from {
+    --angle2: 0deg;
+  }
+  to {
+    --angle2: 360deg;
+  }
+}
+
 
 .game-won {
   display: flex;
