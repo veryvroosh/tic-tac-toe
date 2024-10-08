@@ -1,11 +1,12 @@
+// IIFE that does everything lmao
 const game = (function() {
 
+    /*      DECLARATIONS     */
     let gameBoard = [];
     let roundIndicator = 0;
     let eventListeners = [];
 
     let player1wins = 0, player2wins = 0, drawCount = 0;
-    let winIndicator = false;
 
     let player1name = "vroosh";
     let player2name = "melovi";
@@ -19,8 +20,13 @@ const game = (function() {
     const player2score = document.querySelector("#player2-score");
     const drawScore = document.querySelector("#draw-score");
 
-    // currentPlayer.textContent = `${player1name}'s Turn`;
+    player1score.textContent = `${player1name} Wins: ${player1wins}`;
+    player2score.textContent = `${player2name} Wins: ${player2wins}`;
+    drawScore.textContent = `Draw Count: ${drawCount}`;
+    /*      DECLARATIONS     */
 
+
+    // restart button resets everything to 0
     restartButton.addEventListener('click', () => {
         game.removeEventListeners();
         game.cleanGame();
@@ -28,9 +34,9 @@ const game = (function() {
         player1wins = 0;
         player2wins = 0;
         drawCount = 0;
-        player1score.textContent = `Player 1 Wins: ${player1wins}`;
-        player2score.textContent = `Player 1 Wins: ${player2wins}`;
-        drawScore.textContent = `Player 1 Wins: ${drawCount}`;
+        player1score.textContent = `${player1name} Wins: ${player1wins}`;
+        player2score.textContent = `${player2name} Wins: ${player2wins}`;
+        drawScore.textContent = `Draw Count: ${drawCount}`;
 
     });
 
@@ -38,31 +44,31 @@ const game = (function() {
     function handleCellClick(cell) {
         cell.disabled = true;
         roundIndicator++;
-        console.log(roundIndicator);
 
         let placement = Number.parseInt(cell.name);
-        if (roundIndicator%2 === 1) {
+        if (roundIndicator%2 === 1) {       // if player1's turn
             currentPlayer.textContent = `${player2name}'s Turn`;
             gameBoard[placement-1] = "X";
             cell.textContent = "X";
             if (game.checkWin() === true) {
                 currentPlayer.textContent = `${player1name}'s Turn`;
                 player1wins++;
-                player1score.textContent = `Player 1 Wins: ${player1wins}`;
+                player1score.textContent = `${player1name} Wins: ${player1wins}`;
                 game.roundWon(player1name)
             }
-        } else {
+        } else {        // if player2's turn
             currentPlayer.textContent = `${player1name}'s Turn`;
             gameBoard[placement-1] = "O";
             cell.textContent = "O";
             if (game.checkWin() === true) {
                 currentPlayer.textContent = `${player2name}'s Turn`;
                 player2wins++;
-                player2score.textContent = `Player 2 Wins: ${player2wins}`;
+                player2score.textContent = `${player2name} Wins: ${player2wins}`;
                 game.roundWon(player2name);
             }
         }
 
+        // checks for draw
         if(roundIndicator === 9 && game.checkWin()===false) {
             winDiv.classList.add("game-won");
             document.body.classList.add("blurred");
@@ -114,11 +120,11 @@ const game = (function() {
 
             document.body.appendChild(winDiv);
 
-            console.log(`${winnerName} won the game!`);
             game.removeEventListeners();
             setTimeout(startGame, 3000);
         },
 
+        // cleans game to ready a new game
         cleanGame: function() {
 
             winDiv.remove();
@@ -140,12 +146,6 @@ const game = (function() {
                 cell.removeEventListener('click', listener);
             });
             eventListeners = [];
-        },
-
-        displayBoard: function () {
-            console.log(gameBoard[0], gameBoard[1], gameBoard[2]);
-            console.log(gameBoard[3], gameBoard[4], gameBoard[5]);
-            console.log(gameBoard[6], gameBoard[7], gameBoard[8]);
         }
     };
 })();
