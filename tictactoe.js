@@ -5,14 +5,21 @@ const game = (function() {
     let eventListeners = [];
 
     let player1wins = 0, player2wins = 0, drawCount = 0;
+    let winIndicator = false;
+
+    let player1name = "vroosh";
+    let player2name = "melovi";
 
     const cells = document.querySelectorAll(".game-cell");
+    const currentPlayer = document.querySelector("#current-turn");
     const winDiv = document.createElement("div");
     const playerWinDiv = document.createElement("div");
     const restartButton = document.querySelector("#restart-button");
     const player1score = document.querySelector("#player1-score");
     const player2score = document.querySelector("#player2-score");
     const drawScore = document.querySelector("#draw-score");
+
+    // currentPlayer.textContent = `${player1name}'s Turn`;
 
     restartButton.addEventListener('click', () => {
         game.removeEventListeners();
@@ -35,20 +42,24 @@ const game = (function() {
 
         let placement = Number.parseInt(cell.name);
         if (roundIndicator%2 === 1) {
+            currentPlayer.textContent = `${player2name}'s Turn`;
             gameBoard[placement-1] = "X";
             cell.textContent = "X";
             if (game.checkWin() === true) {
+                currentPlayer.textContent = `${player1name}'s Turn`;
                 player1wins++;
                 player1score.textContent = `Player 1 Wins: ${player1wins}`;
-                game.roundWon("Player1")
+                game.roundWon(player1name)
             }
         } else {
+            currentPlayer.textContent = `${player1name}'s Turn`;
             gameBoard[placement-1] = "O";
             cell.textContent = "O";
             if (game.checkWin() === true) {
+                currentPlayer.textContent = `${player2name}'s Turn`;
                 player2wins++;
                 player2score.textContent = `Player 2 Wins: ${player2wins}`;
-                game.roundWon("Player2");
+                game.roundWon(player2name);
             }
         }
 
@@ -67,6 +78,7 @@ const game = (function() {
 
     return {
         playRound: function () {
+            currentPlayer.textContent = `${player1name}'s Turn`;
             cells.forEach((cell) => {
                 const listener = () => handleCellClick(cell);
                 cell.addEventListener('click', listener);
